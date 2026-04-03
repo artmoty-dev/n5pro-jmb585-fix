@@ -43,6 +43,22 @@ sudo nano /boot/loader/entries/*.conf
 ```
 
 ### Proxmox VE
+
+**UEFI installs using proxmox-boot-tool (most common):**
+```bash
+# Check your boot mode first:
+proxmox-boot-tool status
+
+# If it shows "uefi", edit the kernel cmdline:
+nano /etc/kernel/cmdline
+# Add amd_iommu=pgtbl_v2 to the end of the line
+
+# Apply and reboot:
+proxmox-boot-tool refresh
+reboot
+```
+
+**Legacy BIOS/GRUB installs only:**
 ```bash
 nano /etc/default/grub
 # Add amd_iommu=pgtbl_v2 to GRUB_CMDLINE_LINUX_DEFAULT

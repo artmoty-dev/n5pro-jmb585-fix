@@ -1,0 +1,1 @@
+Linux fedora 6.19.9-jmb585fix #1 SMP PREEMPT_DYNAMIC Thu Mar 26 22:09:12 PDT 2026 x86_64 GNU/Linux

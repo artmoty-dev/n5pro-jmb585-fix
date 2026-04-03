@@ -1,0 +1,1 @@
+BOOT_IMAGE=(hd1,gpt2)/vmlinuz-6.19.9-200.fc43.x86_64 root=UUID=7e68572e-c329-46b9-acfb-ebd45df85463 ro rootflags=subvol=root rhgb quiet random.trust_cpu=off pcie_aspm=off amd_iommu=pgtbl_v2

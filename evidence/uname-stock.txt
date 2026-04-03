@@ -1,0 +1,1 @@
+Linux fedora 6.19.9-200.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Thu Mar 19 21:34:56 UTC 2026 x86_64 GNU/Linux

@@ -1,0 +1,9 @@
+smartctl 7.5 2025-04-30 r5714 [x86_64-linux-6.19.9-jmb585fix] (local build)
+Copyright (C) 2002-25, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF READ SMART DATA SECTION ===
+SMART Self-test log structure revision number 1
+Num  Test_Description    Status                  Remaining  LifeTime(hours)  LBA_of_first_error
+# 1  Extended offline    Completed without error       00%       833         -
+# 2  Extended offline    Completed without error       00%       103         -
+

@@ -1,0 +1,13 @@
+NAME          SIZE MODEL                TRAN   FSTYPE MOUNTPOINT
+sda          25.5T ST28000NT000-4AB103  sata   btrfs  /mnt/storage
+sdb          25.5T ST28000NT000-4AB103  sata   btrfs  
+sdc           5.5T WDC WD60EFAX-68JH4N1 sata   btrfs  /mnt/6tb
+sdd           5.5T WDC WD60EFAX-68JH4N1 sata   btrfs  
+sde             0B MassStorageClass     usb           
+sdf          28.9G USB 2.0 FD           usb           
+└─sdf1       28.9G                             vfat   /run/media/user/USB20FD
+zram0           8G                             swap   [SWAP]
+nvme0n1     119.2G AirDisk 128GB SSD    nvme          
+├─nvme0n1p1   600M                      nvme   vfat   /boot/efi
+├─nvme0n1p2     2G                      nvme   ext4   /boot
+└─nvme0n1p3 116.7G                      nvme   btrfs  /home

@@ -1,0 +1,10 @@
+UUID:             a6b7c3c7-7e59-4e06-a6fd-da225ec21bbd
+Scrub started:    Fri Mar 27 15:09:30 2026
+Status:           running
+Duration:         0:49:08
+Time left:        5:25:32
+ETA:              Fri Mar 27 21:24:11 2026
+Total to scrub:   10.88TiB
+Bytes scrubbed:   1.43TiB  (13.11%)
+Rate:             507.34MiB/s
+Error summary:    no errors found

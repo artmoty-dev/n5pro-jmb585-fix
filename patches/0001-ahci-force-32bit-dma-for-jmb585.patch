@@ -1,6 +1,6 @@
 From: Arthur Husband <artmoty@gmail.com>
 Date: Wed, 26 Mar 2026
-Subject: [PATCH] ahci: force 32-bit DMA for JMicron JMB582/JMB585
+Subject: [PATCH v2] ata: ahci: force 32-bit DMA for JMicron JMB582/JMB585
 
 The JMicron JMB585 (and JMB582) SATA controllers advertise 64-bit DMA
 support via the S64A bit in the AHCI CAP register, but their 64-bit DMA
@@ -8,14 +8,11 @@ implementation is defective. Under sustained I/O, DMA transfers targeting
 addresses above 4GB silently corrupt data — writes land at incorrect
 memory addresses with no errors logged.
 
-This has been confirmed on multiple platforms (Minisforum N5 Pro,
-Raspberry Pi, Unraid, Proxmox, TrueNAS) and is consistent with the
-controller truncating or mishandling upper address bits during 64-bit
-DMA transactions.
-
-The failure pattern is identical to the ASMedia ASM1062 (commit
-edb96a15dc18), which also falsely advertised 64-bit DMA and was fixed
-with AHCI_HFLAG_32BIT_ONLY.
+The failure pattern is similar to the ASMedia ASM1061 (commit
+2073d0e9b2778 ("ahci: add 43-bit DMA address quirk for ASMedia ASM1061
+controllers")), which also falsely advertised full 64-bit DMA support.
+However, the JMB585 requires a stricter 32-bit DMA mask rather than
+43-bit, as corruption occurs with any address above 4GB.
 
 On the Minisforum N5 Pro specifically, the combination of the JMB585's
 broken 64-bit DMA with the AMD Family 1Ah (Strix Point) IOMMU causes
@@ -29,8 +26,6 @@ Add device-specific PCI ID entries for the JMB582 (0x0582) and JMB585
 that combines AHCI_HFLAG_IGN_IRQ_IF_ERR (preserving existing behavior)
 with AHCI_HFLAG_32BIT_ONLY to force 32-bit DMA masks.
 
-Investigation and patch development assisted by Claude (Anthropic AI).
-
 Signed-off-by: Arthur Husband <artmoty@gmail.com>
 ---
  drivers/ata/ahci.c | 16 +++++++++++++++-
@@ -41,13 +36,14 @@ index XXXXXXX..XXXXXXX 100644
 --- a/drivers/ata/ahci.c
 +++ b/drivers/ata/ahci.c
 @@ -51,6 +51,7 @@ enum board_ids {
- 	board_ahci,
- 	board_ahci_43bit_dma,
- 	board_ahci_ign_iferr,
+
+ 	/* board IDs for specific chipsets in alphabetical order */
+ 	board_ahci_al,
+ 	board_ahci_avn,
 +	board_ahci_jmb585,
- 	board_ahci_no_debounce_delay,
- 	board_ahci_no_msi,
- 	/*
+ 	board_ahci_mcp65,
+ 	board_ahci_mcp77,
+ 	board_ahci_mcp89,
 @@ -115,6 +116,14 @@ static const struct ata_port_info ahci_port_info[] = {
  		.udma_mask	= ATA_UDMA6,
  		.port_ops	= &ahci_ops,

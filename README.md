@@ -1,5 +1,7 @@
 # JMB585 Silent Data Corruption — Root Cause Analysis & Kernel Patch
 
+**Video walkthrough:** https://youtu.be/JFkDk3LN4IU
+
 The JMicron JMB585 SATA controller silently corrupts data on Linux systems with wide DMA address spaces. This repository contains the root cause analysis, a kernel patch, and per-OS workaround instructions.
 
 ## Am I Affected?

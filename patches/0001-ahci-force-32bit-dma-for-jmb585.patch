@@ -1,7 +1,7 @@
-From f95d8728217f539f89a5de2903d9f67272242279 Mon Sep 17 00:00:00 2001
+From 58cf5359183ffadd7930a148597f5e08e385a7f4 Mon Sep 17 00:00:00 2001
 From: Arthur Husband <artmoty@gmail.com>
-Date: Mon, 6 Apr 2026 13:00:56 -0700
-Subject: [PATCH v3] ata: ahci: force 32-bit DMA for JMicron JMB582/JMB585
+Date: Mon, 6 Apr 2026 15:09:06 -0700
+Subject: [PATCH v4] ata: ahci: force 32-bit DMA for JMicron JMB582/JMB585
 
 The JMicron JMB585 (and JMB582) SATA controllers advertise 64-bit DMA
 support via the S64A bit in the AHCI CAP register, but their 64-bit DMA
@@ -9,11 +9,11 @@ implementation is defective. Under sustained I/O, DMA transfers targeting
 addresses above 4GB silently corrupt data -- writes land at incorrect
 memory addresses with no errors logged.
 
-The failure pattern is similar to the ASMedia ASM1061 (commit
-2073d0e9b2778 ("ahci: add 43-bit DMA address quirk for ASMedia ASM1061
-controllers")), which also falsely advertised full 64-bit DMA support.
-However, the JMB585 requires a stricter 32-bit DMA mask rather than
-43-bit, as corruption occurs with any address above 4GB.
+The failure pattern is similar to the ASMedia ASM1061
+(commit 20730e9b2778 ("ahci: add 43-bit DMA address quirk for ASMedia
+ASM1061 controllers")), which also falsely advertised full 64-bit DMA
+support. However, the JMB585 requires a stricter 32-bit DMA mask rather
+than 43-bit, as corruption occurs with any address above 4GB.
 
 On the Minisforum N5 Pro specifically, the combination of the JMB585's
 broken 64-bit DMA with the AMD Family 1Ah (Strix Point) IOMMU causes
@@ -29,6 +29,13 @@ with AHCI_HFLAG_32BIT_ONLY to force 32-bit DMA masks.
 
 Signed-off-by: Arthur Husband <artmoty@gmail.com>
 ---
+Changes since v3:
+- Fixed commit reference hash (was transposed: 2073d vs 20730)
+- Reflowed paragraph so commit reference passes checkpatch
+
+No code changes from v3. Please disregard v3 in favour of this
+version — the typo in the commit hash slipped through my review.
+
  drivers/ata/ahci.c | 14 ++++++++++++++
  1 file changed, 14 insertions(+)
 

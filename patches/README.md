@@ -12,7 +12,7 @@ but their implementation is broken — DMA transfers targeting addresses above
 The `amd_iommu=pgtbl_v2` kernel parameter constrains the *entire platform's* IOMMU
 to 48-bit page tables. This patch instead targets the *specific controller* that
 can't handle 64-bit DMA, using the same `AHCI_HFLAG_32BIT_ONLY` mechanism the
-kernel already uses for other broken controllers (ASMedia ASM1062, ATI SB600).
+kernel already uses for other broken controllers (ASMedia ASM1061, ATI SB600).
 
 ## Files
 
@@ -132,27 +132,27 @@ keeping both provides defense in depth:
 - **pgtbl_v2:** Prevents the IOMMU from issuing addresses beyond 47 bits to *any* device
 - **Kernel 6.19:** Fixes the V1 page table race that caused corruption during dynamic growth
 
-## Upstream Submission
+## Upstream Status
 
-If testing confirms this fixes the corruption, this patch should be submitted to
-the `linux-ide@vger.kernel.org` mailing list. The commit message in the patch
-file is written in kernel patch format for this purpose.
+This patch has been accepted into mainline Linux and applied to `libata/linux.git`
+(for-7.0-fixes). Upstream commit: https://git.kernel.org/libata/linux/c/105c4256
 
-Cross-platform evidence supporting the submission:
+Cross-platform evidence that supported the submission:
 - Minisforum N5 Pro: silent data corruption (BTRFS/ZFS checksum failures)
 - Raspberry Pi: kernel panics, requires `pcie-32bit-dma` device tree overlay
 - Unraid: "1st FIS failed" errors, drive disappearances
 - Proxmox: controller inaccessibility after kernel upgrades
 - TrueNAS/FreeBSD: drive detection failures under high I/O
 - OpenBSD: NCQ issues, 64-bit DMA cited as problematic
-- ASMedia ASM1062 precedent: identical pattern, already fixed in kernel (commit edb96a15dc18)
+- ASMedia ASM1061 precedent: similar pattern, already fixed in kernel (commit 20730e9b2778)
 
 ## References
 
 - AMD Revision Guide #58730 (Family 1Ah Models 10h-1Fh) — IOMMU errata
 - AMD Revision Guide #58251 (Family 1Ah Models 00h-0Fh) — IOMMU errata
 - AMD IOMMU Specification (document #48882)
-- ASMedia ASM1062 precedent: commit edb96a15dc18 in Linux kernel
+- ASMedia ASM1061 43-bit DMA quirk: commit 20730e9b2778 in Linux kernel
+- ASMedia ASM106x extension: commit 51af8f255bda in Linux kernel
 - Raspberry Pi JMB585 workaround: `pcie-32bit-dma` device tree overlay
 - Kernel `increase_address_space()` race fixes: commits 754265bcab78, 140456f994, 1e56310b40fd
 - Minisforum N5 Pro Discord community (nas-n5pro channel)

@@ -95,7 +95,7 @@ Three factors stack to cause silent corruption:
 2. **AMD Zen 5 IOMMU uses 5-level page tables** (57-bit address space) — hands out wider addresses than Zen 4, exposing the controller's lie
 3. **IOMMU V1 page table race condition** (pre-kernel 6.17) — concurrent page table growth caused inconsistent mappings
 
-This is the same bug pattern as the ASMedia ASM1062 (kernel commit `edb96a15dc18`), which also falsely advertised 64-bit DMA and was fixed with `AHCI_HFLAG_32BIT_ONLY`.
+This is the same bug pattern as the ASMedia ASM1061 (kernel commit `20730e9b2778`), which also falsely advertised 64-bit DMA and was fixed with `AHCI_HFLAG_43BIT_ONLY`. The JMB585 requires the stricter `AHCI_HFLAG_32BIT_ONLY` as corruption occurs with any address above 4GB.
 
 ## The Kernel Patch
 
@@ -106,7 +106,7 @@ After the patch:
 ahci 0000:c1:00.0: controller can't do 64bit DMA, forcing 32bit
 ```
 
-This patch has been submitted to the Linux kernel mailing list (`linux-ide@vger.kernel.org`).
+This patch has been accepted into mainline Linux ([commit `105c4256`](https://git.kernel.org/libata/linux/c/105c4256)) and will ship in kernel 7.0. It will likely be backported to stable kernels as well.
 
 ## Evidence
 
